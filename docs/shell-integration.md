@@ -47,7 +47,7 @@ in your tmux.conf for user vars to work.
 
 Those vars will be updated each time the prompt is shown and just prior to executing a command.
 
-The shell integration provides a shell function named `__wezterm_set_user_var` which can be
+The shell integration provides a shell function named `__wezterm_set_user_var` (or `set_user_var` in Xonsh) which can be
 used to set your own user vars.
 
 Setting a user var will generate events in the window that contains
