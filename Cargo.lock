@@ -5639,7 +5639,7 @@ checksum = "8f50febec83f5ee1df3015341d8bd429f2d1cc62bcba7ea2076759d315084683"
 
 [[package]]
 name = "termwiz"
-version = "0.23.3"
+version = "0.24.0"
 dependencies = [
  "anyhow",
  "base64 0.22.1",
@@ -6266,7 +6266,7 @@ dependencies = [
 
 [[package]]
 name = "vtparse"
-version = "0.6.2"
+version = "0.7.0"
 dependencies = [
  "heapless",
  "k9",
@@ -7747,11 +7747,11 @@ dependencies = [
 [[package]]
 name = "xcb-imdkit"
 version = "0.3.0"
-source = "git+https://github.com/wez/xcb-imdkit-rs.git?rev=358e226573461fe540efb920e2aad740e3c6fab1#358e226573461fe540efb920e2aad740e3c6fab1"
+source = "git+https://github.com/wezterm/xcb-imdkit-rs.git?rev=212330f7c6c37794d78061a773e8f4f9e4785bbb#212330f7c6c37794d78061a773e8f4f9e4785bbb"
 dependencies = [
  "bitflags 1.3.2",
  "cc",
- "lazy_static",
+ "parking_lot",
  "pkg-config",
  "xcb",
 ]
