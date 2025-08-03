@@ -564,6 +564,10 @@ pub struct Config {
     #[dynamic(default)]
     pub macos_window_background_blur: i64,
 
+    /// Only works on KDE Wayland
+    #[dynamic(default)]
+    pub kde_window_background_blur: bool,
+
     /// Only works on Windows
     #[dynamic(default)]
     pub win32_system_backdrop: SystemBackdrop,
@@ -636,7 +640,12 @@ pub struct Config {
     pub animation_fps: u8,
 
     #[dynamic(default)]
+    pub text_min_contrast_ratio: Option<f32>,
+
+    #[dynamic(default)]
     pub force_reverse_video_cursor: bool,
+    #[dynamic(default = "default_reverse_video_cursor_min_contrast")]
+    pub reverse_video_cursor_min_contrast: f32,
 
     /// Specifies the default cursor style.  various escape sequences
     /// can override the default style in different situations (eg:
@@ -1529,16 +1538,27 @@ impl Config {
             }
         };
 
-        self.apply_cmd_defaults(&mut cmd, default_cwd);
+        self.apply_cmd_defaults(&mut cmd, None, default_cwd);
 
         Ok(cmd)
     }
 
-    pub fn apply_cmd_defaults(&self, cmd: &mut CommandBuilder, default_cwd: Option<&PathBuf>) {
+    pub fn apply_cmd_defaults(
+        &self,
+        cmd: &mut CommandBuilder,
+        default_prog: Option<&Vec<String>>,
+        default_cwd: Option<&PathBuf>,
+    ) {
         // Apply `default_cwd` only if `cwd` is not already set, allows `--cwd`
         // option to take precedence
         if let (None, Some(cwd)) = (cmd.get_cwd(), default_cwd) {
             cmd.cwd(cwd);
+        }
+
+        if let Some(default_prog) = default_prog {
+            if cmd.is_default_prog() {
+                cmd.replace_default_prog(default_prog);
+            }
         }
 
         // Augment WSLENV so that TERM related environment propagates
@@ -1905,6 +1925,10 @@ const fn default_one_cell() -> Dimension {
 
 const fn default_half_cell() -> Dimension {
     Dimension::Cells(0.5)
+}
+
+const fn default_reverse_video_cursor_min_contrast() -> f32 {
+    2.5
 }
 
 #[derive(FromDynamic, ToDynamic, Clone, Copy, Debug)]
